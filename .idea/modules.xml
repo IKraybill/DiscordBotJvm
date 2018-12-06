@@ -2,8 +2,12 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/DiscordBotJvm.iml" filepath="$PROJECT_DIR$/.idea/DiscordBotJvm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.ikraybill.discordbot.DiscordBotJvm.iml" filepath="$PROJECT_DIR$/.idea/modules/com.ikraybill.discordbot.DiscordBotJvm.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.ikraybill.discordbot.DiscordBotJvm.iml" filepath="$PROJECT_DIR$/.idea/modules/com.ikraybill.discordbot.DiscordBotJvm.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.ikraybill.discordbot.DiscordBotJvm.main.iml" filepath="$PROJECT_DIR$/.idea/modules/com.ikraybill.discordbot.DiscordBotJvm.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.ikraybill.discordbot.DiscordBotJvm.main.iml" filepath="$PROJECT_DIR$/.idea/modules/com.ikraybill.discordbot.DiscordBotJvm.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.ikraybill.discordbot.DiscordBotJvm.test.iml" filepath="$PROJECT_DIR$/.idea/modules/com.ikraybill.discordbot.DiscordBotJvm.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.ikraybill.discordbot.DiscordBotJvm.test.iml" filepath="$PROJECT_DIR$/.idea/modules/com.ikraybill.discordbot.DiscordBotJvm.test.iml" />
     </modules>
   </component>
