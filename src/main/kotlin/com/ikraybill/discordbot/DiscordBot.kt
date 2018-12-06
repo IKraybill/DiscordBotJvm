@@ -9,10 +9,13 @@ class DiscordBot: IListener<Event>{
     override fun handle(event: Event?) {
         if (event is ReadyEvent){
             println("Logged in!")
+
         } else if (event is MessageReceivedEvent){
             val message = event.message
-            val content = message.content
-            if (content.startsWith(Reference.PREFIX)) {
+            if (message.content.startsWith(Reference.PREFIX)) {
+                var args = message.content.split(" ")
+                val cmd = args[0].replaceFirst(Reference.PREFIX, "")
+                args = args.slice(1..args.size)
                 message.channel.sendMessage("Hello from Kotlin/jvm!")
             }
         }
