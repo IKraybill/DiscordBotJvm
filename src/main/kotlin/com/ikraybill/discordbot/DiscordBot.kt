@@ -1,5 +1,10 @@
 package com.ikraybill.discordbot
 
+import com.ikraybill.discordbot.commands.BaseCommandSet
+import com.ikraybill.discordbot.commands.CommandSet
+import com.ikraybill.discordbot.commands.TextCommand
+import com.ikraybill.discordbot.voiceCommands.VoiceCommand
+import com.ikraybill.discordbot.voiceCommands.VoiceCommandSet
 import sx.blah.discord.api.events.Event
 import sx.blah.discord.api.events.IListener
 import sx.blah.discord.handle.impl.events.ReadyEvent
@@ -12,11 +17,15 @@ class DiscordBot: IListener<Event>{
 
         } else if (event is MessageReceivedEvent){
             val message = event.message
+            CommandSet.message = message
             if (message.content.startsWith(Reference.PREFIX)) {
-                var args = message.content.split(" ")
-                val cmd = args[0].replaceFirst(Reference.PREFIX, "")
-                args = args.slice(1..args.size)
-                message.channel.sendMessage("Hello from Kotlin/jvm!")
+                val baseCommands = BaseCommandSet(Reference.PREFIX, message.content.split(" "))
+                baseCommands.addCommand(TextCommand("hello", "Hello, ${message.author}"))
+                val voiceCommands = VoiceCommandSet("music")
+                voiceCommands.addCommand(VoiceCommand("join"))
+                baseCommands.addCommand(voiceCommands)
+                baseCommands.genHelpCommand()
+                baseCommands.parseCommands()
             }
         }
     }
