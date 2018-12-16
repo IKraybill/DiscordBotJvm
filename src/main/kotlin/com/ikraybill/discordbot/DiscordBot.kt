@@ -1,10 +1,10 @@
 package com.ikraybill.discordbot
 
-import com.ikraybill.discordbot.commands.BaseCommandSet
 import com.ikraybill.discordbot.commands.CommandSet
+import com.ikraybill.discordbot.commands.ICommandSet
 import com.ikraybill.discordbot.commands.TextCommand
 import com.ikraybill.discordbot.voiceCommands.VoiceCommand
-import com.ikraybill.discordbot.voiceCommands.VoiceCommandSet
+import com.ikraybill.discordbot.voiceCommands.VoiceICommandSet
 import sx.blah.discord.api.events.Event
 import sx.blah.discord.api.events.IListener
 import sx.blah.discord.handle.impl.events.ReadyEvent
@@ -17,12 +17,15 @@ class DiscordBot: IListener<Event>{
 
         } else if (event is MessageReceivedEvent){
             val message = event.message
-            CommandSet.message = message
+            ICommandSet.message = message
             if (message.content.startsWith(Reference.PREFIX)) {
-                val baseCommands = BaseCommandSet(Reference.PREFIX, message.content.split(" "))
-                baseCommands.addCommand(TextCommand("hello", "Hello, ${message.author}"))
-                val voiceCommands = VoiceCommandSet("music")
-                voiceCommands.addCommand(VoiceCommand("join"))
+                //val baseCommands = CommandSet(Reference.PREFIX, message.content.split(" "))
+                //baseCommands.addCommand(TextCommand("hello", "Hello, ${message.author}"))
+                val voiceCommands = VoiceICommandSet("music")
+                voiceCommands.addCommand(VoiceCommand("join") {
+                    if (message.author.voiceStates.size() < 1)
+                        message.channel.sendMessage("Not in a voice channel!")
+                })
                 baseCommands.addCommand(voiceCommands)
                 baseCommands.genHelpCommand()
                 baseCommands.parseCommands()
