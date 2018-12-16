@@ -1,44 +1,14 @@
 package com.ikraybill.discordbot.commands
 
-import sx.blah.discord.handle.obj.IMessage
+import com.ikraybill.discordbot.Reference
 
-abstract class CommandSet(val name: String){
+class CommandSet(name: String, override var params: List<String>): ICommandSet {
+    override var helpBase: String = "Possible commands: "
+    override var prefix = Reference.PREFIX
+    override var cmd = params[0].replaceFirst(prefix, "")
+    override var args = if (params.size > 1) params.slice(1..params.size) else listOf()
 
-    abstract var params: List<String>
-    abstract var cmd: String
-    abstract var args: List<String>
-    abstract var prefix: String
-    abstract val helpBase: String
-
-    var helpText = ""
-
-    private val commands: MutableList<ICommand> = mutableListOf()
-    private val subCommandSets :MutableList<SubCommandSet> = mutableListOf()
-
-    companion object {
-        lateinit var message: IMessage
-    }
-
-    fun parseCommands(){
-        for (command in commands)
-            if (cmd.toLowerCase() == command.name){
-                if (command is Command && command.runnable){
-                    command.task()
-                } else if (command is CommandSet){
-                    command.parseCommands()
-                }
-            }
-    }
-
-    fun addCommand(command: ICommand){
-        command.parent = this
-        if (!(command is Command && !command.indexed)){
-            helpText += (if (helpText.isEmpty()) "" else ", ") + command.name
-        }
-        commands.add(command)
-    }
-
-    fun genHelpCommand(){
-        addCommand(TextCommand("help", helpBase + helpText))
+    init {
+        addCommand(TextCommand("default", "Unknown command. Type " + this.prefix + "help for more info", false, false))
     }
 }

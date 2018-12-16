@@ -1,11 +1,8 @@
 package com.ikraybill.discordbot.voiceCommands
 
-import com.ikraybill.discordbot.Reference
-import com.ikraybill.discordbot.commands.CommandSet
-import com.ikraybill.discordbot.commands.SubCommandSet
-import com.ikraybill.discordbot.commands.TextCommand
+import com.ikraybill.discordbot.commands.SubICommandSet
 
-class VoiceCommandSet(name: String): SubCommandSet(name) {
+class VoiceICommandSet(name: String): SubICommandSet(name) {
     override var helpBase: String = "Possible voice commands: "
     override lateinit var params: List<String>
     override lateinit var cmd: String
