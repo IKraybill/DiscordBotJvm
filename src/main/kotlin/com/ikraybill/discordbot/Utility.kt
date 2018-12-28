@@ -5,9 +5,9 @@ import org.json.JSONTokener
 import java.io.InputStream
 
 object Utility {
-    fun getFileInputStream(fileName: String): InputStream {
-        val classLoader = Thread.currentThread().contextClassLoader
-        return classLoader.getResourceAsStream(fileName)
+    fun getFileInputStream(fileName: String): InputStream? {
+        val classLoader = javaClass.classLoader
+        return classLoader.getResource(fileName).openStream()
     }
 
     fun getJSON(fileName: String): JSONObject{
