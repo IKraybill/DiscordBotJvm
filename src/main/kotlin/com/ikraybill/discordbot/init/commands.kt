@@ -6,6 +6,7 @@ import com.ikraybill.discordbot.commands.Command
 import com.ikraybill.discordbot.commands.SubCommandSet
 import java.io.File
 import javax.rmi.CORBA.Util
+import kotlin.random.Random
 
 val commands = mutableListOf(
     Command("hello") {
@@ -50,6 +51,15 @@ val commands = mutableListOf(
     Command("daniel") {
         val files = Utility.getJSON("daniel.json").toMap().values
         message.channel.sendFile(Utility.getFile(files.random() as String))
+    },
+
+    Command("god") {
+        val words = Utility.getFile("words.txt")?.readLines()
+        val numWords = Random.nextInt(10, 100)
+
+        var string = "God says..."
+        for (i in 0..numWords) string += " ${words?.random()}"
+        message.channel.sendMessage(string)
     }
 
 )
