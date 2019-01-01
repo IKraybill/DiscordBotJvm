@@ -1,16 +1,15 @@
-//package com.ikraybill.discordbot.commands
-//
-//abstract class SubCommandSet(name: String): ICommandSet(name), ICommand  {
-//    override var parent: ICommandSet? = null
-//        set(value) {
-//            field = value
-//            params = field!!.args
-//            cmd = if (params.isNotEmpty()) params[0] else "none"
-//            args = if (params.size > 1) params.slice(1..params.size) else listOf()
-//            prefix = field!!.prefix + " "
-//        }
-//
-//    init {
-//        addCommand(TextCommand("none", "Unknown command. Type " + this.parent?.prefix + "help for more info", false, false))
-//    }
-//}
+package com.ikraybill.discordbot.commands
+
+class SubCommandSet(override val name: String,
+                    override val helpBase: String,
+                    override val commandIdentifier: String = name,
+                    var commandSetDelegate: CommandSet = CommandSet(commandIdentifier, helpBase)
+): ICommandSet by commandSetDelegate, ICommand {
+
+    override val argHelp: String?
+        get() = "<command>"
+
+    override val indexed: Boolean = true
+
+    override val task: (args: List<String>) -> Unit = {parseCommand(it)}
+}

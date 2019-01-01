@@ -3,42 +3,34 @@ package com.ikraybill.discordbot.commands
 import com.ikraybill.discordbot.DiscordBot.Companion.message
 import com.ikraybill.discordbot.Reference
 
-class CommandSet(override var params: List<String>, override val commands: MutableList<ICommand> = mutableListOf()): ICommandSet {
-    override var helpText: String
-        get() = helpBase + commands.filter { it.indexed }.joinToString { it.name }
-        set(value) {}
-    override var helpBase: String = "Possible commands: "
+class CommandSet(override val commandIdentifier: String, override val helpBase: String, override val commands: MutableList<ICommand> = mutableListOf()): ICommandSet {
+    override val helpText: String
+        get() = helpBase + ": " + commands.filter { it.indexed }.joinToString { it.name + if (it.argHelp != null) " ${it.argHelp}" else "" }
     override var prefix = Reference.PREFIX
-    override var cmd = params[0].replaceFirst(prefix, "")
-    override var args = if (params.size > 1) params.slice(1..params.size) else listOf()
-
-    inner class Command (override val name: String,
-                         override var indexed: Boolean = true,
-                         override val task: (() -> Any) = { println("Error, no task specified") }
-                         ): ICommand
-    {
-        val args = this@CommandSet.args
-    }
 
     init {
-        addCommand(Command("help", false) {
+        addCommand(Command("help", indexed = false) {
             message.channel.sendMessage(helpText)
         })
     }
 
-    fun parseCommands(){
-        for (command in commands)
-            if (cmd.toLowerCase() == command.name){
-                if (command is Command){
-                    command.task()
-                }
-//                else if (command is ICommandSet){
-//                    command.parseCommands()
-//                }
+    override fun parseCommand(params: List<String>){
+        val cmd = params.getOrElse(0) {""}.replaceFirst(prefix, "")
+        val args = if (params.size > 1) params.slice(1 until params.size) else listOf()
+        if (cmd.isEmpty()){
+            message.channel.sendMessage("No $commandIdentifier specified, silly!")
+        }
+
+        for (command in commands) {
+            if (cmd.toLowerCase() == command.name) {
+                command.task(args)
+                return
             }
+        }
+        message.channel.sendMessage("Unknown $commandIdentifier, silly! Try " + message.content.removeSuffix(cmd) + "help")
     }
 
-    fun addCommand(command: ICommand){
+    override fun addCommand(command: ICommand){
         commands.add(command)
     }
 }

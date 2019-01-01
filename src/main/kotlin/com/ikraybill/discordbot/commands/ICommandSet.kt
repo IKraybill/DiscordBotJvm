@@ -1,16 +1,15 @@
 package com.ikraybill.discordbot.commands
 
-import sx.blah.discord.handle.obj.IMessage
-
 interface ICommandSet{
 
-    var params: List<String>
-    var cmd: String
-    var args: List<String>
     var prefix: String
     val helpBase: String
+    val helpText: String
+    val commandIdentifier: String
 
-    var helpText: String
+    val commands: List<ICommand>
 
-    val commands: MutableList<ICommand>
+    fun parseCommand(params: List<String>)
+
+    fun addCommand(command: ICommand)
 }

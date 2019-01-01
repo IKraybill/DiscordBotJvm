@@ -1,7 +1,10 @@
 package com.ikraybill.discordbot
 
 import com.ikraybill.discordbot.Reference.client
+import com.ikraybill.discordbot.commands.Command
 import com.ikraybill.discordbot.commands.CommandSet
+import com.ikraybill.discordbot.commands.SubCommandSet
+import com.ikraybill.discordbot.init.commands
 import sx.blah.discord.api.events.Event
 import sx.blah.discord.api.events.IListener
 import sx.blah.discord.handle.impl.events.ReadyEvent
@@ -32,13 +35,13 @@ class DiscordBot: IListener<Event>{
 
             if (message.content.startsWith(Reference.PREFIX)) {
                 val params = message.content.split(" ")
-                val baseCommandSet = CommandSet(params)
-                baseCommandSet.addCommand(baseCommandSet.Command("test") {
-                    message.channel.sendMessage("Hello faggot")
-                })
-                baseCommandSet.parseCommands()
-            } else if (message.content.indexOf("<@"+client.applicationClientID) == 0 || message.content.indexOf("<@!"+ client.applicationClientID) == 0) { // Catch @Mentions
-                message.channel.sendMessage("Use `${Reference.PREFIX}` to interact with me.") //help people learn your prefix
+                val baseCommandSet = CommandSet("command", "Possible commands", commands)
+                val voiceCommandSet = SubCommandSet("music", "music command", "Possible music commands")
+
+                baseCommandSet.addCommand(voiceCommandSet)
+                baseCommandSet.parseCommand(params)
+            } else if (message.content.indexOf("<@"+client.applicationClientID) == 0 || message.content.indexOf("<@!"+ client.applicationClientID) == 0) {
+                message.channel.sendMessage("Use `${Reference.PREFIX}` to interact with me.")
             }
         }
     }
