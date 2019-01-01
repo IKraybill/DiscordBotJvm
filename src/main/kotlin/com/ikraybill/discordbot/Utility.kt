@@ -11,8 +11,8 @@ object Utility {
         return File(classLoader.getResource(fileName).toURI())
     }
 
-    fun getJSON(fileName: String): JSONObject{
-        val JSONFile = JSONTokener(getFile(fileName)?.inputStream())
+    fun getJSON(file: File?): JSONObject{
+        val JSONFile = JSONTokener(file?.inputStream())
         return JSONObject(JSONFile)
     }
 }

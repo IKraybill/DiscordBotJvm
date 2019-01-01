@@ -2,6 +2,7 @@ package com.ikraybill.discordbot.init
 
 import com.ikraybill.discordbot.DiscordBot.Companion.message
 import com.ikraybill.discordbot.Utility
+import com.ikraybill.discordbot.Utility.getFile
 import com.ikraybill.discordbot.commands.Command
 import com.ikraybill.discordbot.commands.SubCommandSet
 import java.io.File
@@ -19,7 +20,7 @@ val commands = mutableListOf(
     },
 
     SubCommandSet("joke", "Possible jokes").apply {
-        for ((name, joke) in Utility.getJSON("jokes.json").toMap()) {
+        for ((name, joke) in Utility.getJSON(getFile("jokes.json")).toMap()) {
             val jokeParts = joke as ArrayList<*>
             addCommand(Command(name) {
                 message.channel.sendMessage(jokeParts[0] as String)
@@ -30,7 +31,7 @@ val commands = mutableListOf(
     },
 
     SubCommandSet("quote", "Possible quote authors", "quote author").apply {
-        for ((name, value) in Utility.getJSON("quotes.json").toMap()) {
+        for ((name, value) in Utility.getJSON(getFile("quotes.json")).toMap()) {
             val quotes = value as ArrayList<*>
             addCommand(Command(name, "[index]") {
                 val arg = it.getOrNull(0)
@@ -49,7 +50,7 @@ val commands = mutableListOf(
     },
 
     Command("daniel") {
-        val files = Utility.getJSON("daniel.json").toMap().values
+        val files = Utility.getJSON(getFile("daniel.json")).toMap().values
         message.channel.sendFile(Utility.getFile(files.random() as String))
     },
 

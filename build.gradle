@@ -3,7 +3,7 @@ plugins {
 }
 
 group "com.ikraybill.discordbot"
-version '1.0-SNAPSHOT'
+version '1.0.1'
 
 repositories {
     mavenCentral()
@@ -16,6 +16,18 @@ dependencies {
     compile "org.json:json:20180813"
     compile "org.slf4j:slf4j-simple:1.6.1"
     compile "com.sedmelluq:lavaplayer:1.3.10"
+}
+
+def mainClass = group + ".MainKt"
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': mainClass
+        )
+    }
+
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
 }
 
 compileKotlin {
