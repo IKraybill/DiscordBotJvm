@@ -30,6 +30,11 @@ jar {
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
 }
 
+task execute(type:JavaExec) {
+    main = mainClass
+    classpath = sourceSets.main.runtimeClasspath
+}
+
 compileKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
