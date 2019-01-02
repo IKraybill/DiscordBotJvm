@@ -17,30 +17,37 @@ class DiscordBot: IListener<Event>{
 
     companion object {
         lateinit var message: IMessage
+        lateinit var baseCommandSet: CommandSet
+        lateinit var voiceCommandSet: SubCommandSet
     }
 
     override fun handle(event: Event?) {
         if (event is ReadyEvent){
             println("Logged in!")
 
-            client.changePresence(StatusType.ONLINE, ActivityType.PLAYING, Reference.PREFIX + "help")
+            baseCommandSet = CommandSet("command", "Possible commands", commands)
+            voiceCommandSet = SubCommandSet("music",  "Possible music commands", "music command")
+
+            client.changePresence(StatusType.ONLINE, ActivityType.PLAYING, "${Reference.PREFIX}help")
         } else if (event is MessageReceivedEvent){
             message = event.message
 
+            //Don't respond to bots
             if (message.author.isBot) return
 
-            if (message.channel.isPrivate) {
-                return
-            }
+            //Don't respond to DMs
+            if (message.channel.isPrivate) return
 
+            //Detect prefix and run command
             if (message.content.startsWith(Reference.PREFIX)) {
-                val params = message.content.split(" ")
-                val baseCommandSet = CommandSet("command", "Possible commands", commands)
-                val voiceCommandSet = SubCommandSet("music", "music command", "Possible music commands")
+                val params = message.content.replaceFirst(Reference.PREFIX, "").split(" ")
 
                 baseCommandSet.addCommand(voiceCommandSet)
                 baseCommandSet.parseCommand(params)
-            } else if (message.content.indexOf("<@"+client.applicationClientID) == 0 || message.content.indexOf("<@!"+ client.applicationClientID) == 0) {
+            }
+
+            //Detect @mentions
+            else if (message.content.indexOf("<@"+client.applicationClientID) == 0 || message.content.indexOf("<@!"+ client.applicationClientID) == 0) {
                 message.channel.sendMessage("Use `${Reference.PREFIX}` to interact with me.")
             }
         }

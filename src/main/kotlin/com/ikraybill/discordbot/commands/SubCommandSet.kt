@@ -7,7 +7,7 @@ class SubCommandSet(override val name: String,
 ): ICommandSet by commandSetDelegate, ICommand {
 
     override val argHelp: String?
-        get() = "<command>"
+        get() = "<$commandIdentifier>"
 
     override val indexed: Boolean = true
 

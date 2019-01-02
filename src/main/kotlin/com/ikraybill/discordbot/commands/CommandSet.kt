@@ -15,10 +15,11 @@ class CommandSet(override val commandIdentifier: String, override val helpBase: 
     }
 
     override fun parseCommand(params: List<String>){
-        val cmd = params.getOrElse(0) {""}.replaceFirst(prefix, "")
+        val cmd = params.getOrElse(0) {""}
         val args = if (params.size > 1) params.slice(1 until params.size) else listOf()
         if (cmd.isEmpty()){
             message.channel.sendMessage("No $commandIdentifier specified, silly!")
+            return
         }
 
         for (command in commands) {
