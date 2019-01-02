@@ -36,13 +36,13 @@ val commands = mutableListOf(
                 if (arg != null) {
                     val index = arg.toIntOrNull()
                     when {
-                        index != null -> message.channel.sendMessage(quotes[index - 1] as String)
+                        index != null -> message.channel.sendMessage("\"${quotes[index - 1] as String}\"")
                         arg == "help" -> message.channel.sendMessage("$name has ${quotes.size} quotes")
                         else -> message.channel.sendMessage("Not a valid index! Try ${message.content.removeSuffix(arg)}help")
                     }
                 }
                 else
-                    message.channel.sendMessage("\"" + quotes.random() as String + "\"")
+                    message.channel.sendMessage("\"${quotes.random() as String}\"")
             })
         }
     },
