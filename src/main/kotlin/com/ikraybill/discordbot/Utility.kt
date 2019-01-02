@@ -6,13 +6,8 @@ import java.io.File
 import java.io.InputStream
 
 object Utility {
-    fun getFile(fileName: String): File? {
+    fun getFile(fileName: String): File {
         val classLoader = javaClass.classLoader
         return File(classLoader.getResource(fileName).toURI())
-    }
-
-    fun getJSON(file: File?): JSONObject{
-        val JSONFile = JSONTokener(file?.inputStream())
-        return JSONObject(JSONFile)
     }
 }
